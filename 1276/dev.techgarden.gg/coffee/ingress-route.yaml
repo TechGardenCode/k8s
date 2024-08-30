@@ -1,0 +1,21 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: coffee-dev-techgarden-gg
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.class: traefik-external
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`coffee.dev.techgarden.gg`)
+      kind: Rule
+      services:
+        - name: coffee-dev-techgarden-gg
+          port: 80
+      middlewares:
+        - name: default-headers
+  tls:
+    secretName: dev-techgarden-gg-tls
