@@ -1,0 +1,30 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kian-coffee
+  namespace: kian-coffee
+  labels:
+    app: kian-coffee
+spec:
+  replicas: 3
+  progressDeadlineSeconds: 600
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: kian-coffee
+  template:
+    metadata:
+      labels:
+        app: kian-coffee
+    spec:
+      containers:
+      - name: coffee-kian-www
+        image: ghcr.io/techgardencode/kian.coffee:sha-7925c18
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: dockerconfigjson-github-com

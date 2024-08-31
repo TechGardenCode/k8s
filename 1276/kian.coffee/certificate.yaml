@@ -1,0 +1,15 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: kian-coffee
+  namespace: kian-coffee
+spec:
+  secretName: dev-kian-coffee-tls
+  issuerRef:
+    name: letsencrypt-namecheap-prod
+    kind: ClusterIssuer
+  commonName: "*.dev.kian.coffee"
+  dnsNames:
+  - "dev.kian.coffee"
+  - "*.dev.kian.coffee"

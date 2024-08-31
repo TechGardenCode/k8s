@@ -1,0 +1,48 @@
+replicaCount: 3
+
+image:
+  repository: ghcr.io/techgardencode/kian.coffee
+  pullPolicy: IfNotPresent
+  tag: "sha-7925c18"
+
+imagePullSecrets: 
+ - name: dockerconfigjson-github-com
+
+podAnnotations: {}
+podLabels: {
+  app: kian-coffee
+}
+
+serviceAnnotations:
+  external-dns.alpha.kubernetes.io/hostname: "dev.kian.coffee"
+
+service:
+  type: LoadBalancer
+  port: 80
+
+ingressRoute:
+  enabled: true
+  annotations: {
+    kubernetes.io/ingress.class: traefik-external
+  }
+  entryPoints: 
+    - websecure
+  hosts:
+    - host: dev.kian.coffee
+  tls:
+    secretName: dev-kian-coffee-tls
+
+livenessProbe:
+  httpGet:
+    path: /
+    port: http
+readinessProbe:
+  httpGet:
+    path: /
+    port: http
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
